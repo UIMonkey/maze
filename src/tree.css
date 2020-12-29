@@ -1,0 +1,11 @@
+.tree {
+    height: 100px;
+    width: 100px;
+    background-color: blue;
+    background-image: url("./tree.png");
+    background-position: center;
+    background-size: contain;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}

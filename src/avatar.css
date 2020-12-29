@@ -1,0 +1,10 @@
+.avatar {
+    height: 10%;
+    width: 75px;
+    background-image: url("./ant1.png");
+    background-position: center;
+    background-size: contain;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
