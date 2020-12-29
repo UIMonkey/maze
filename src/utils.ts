@@ -1,15 +1,10 @@
-import { IMazeObject, MazeObject } from "./objects/maze-object";
+import { IMazeObject } from "./objects/maze-object";
 
 export const boardSizePercentage = 80;
 export const cellsPerRow = 10;
 export const cellSize = boardSizePercentage / cellsPerRow;
 export const maxBoardSize = boardSizePercentage - cellSize;
 export const gridSectionWidthPercentage = Math.floor(boardSizePercentage / cellsPerRow);
-
-export class GameObject {
-    avatar: MazeObject = new MazeObject();
-    trees: MazeObject[] = [];
-}
 
 export const checkBounds = (object: IMazeObject): void => {
     if (object.xPos < 0) {
@@ -24,5 +19,3 @@ export const checkBounds = (object: IMazeObject): void => {
         object.yPos = maxBoardSize;
     }
 }
-
-export default GameObject;

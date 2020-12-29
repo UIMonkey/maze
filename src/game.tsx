@@ -1,6 +1,7 @@
 import React from 'react';
 import Avatar from './objects/avatar';
-import GameObject, { boardSizePercentage, checkBounds, gridSectionWidthPercentage, maxBoardSize } from './game-object';
+import GameObject from './objects/game-object';
+import { boardSizePercentage, checkBounds, gridSectionWidthPercentage, maxBoardSize } from './utils';
 import './game.css';
 import PlayAgain from './play-again';
 import Tree from './objects/tree';
@@ -49,7 +50,7 @@ export class Game extends React.Component {
 
     resetGame() {
         console.log("Reset Game");
-        this.setState({game: new GameObject()});
+        this.setState({ game: new GameObject() });
     }
 
     render() {
@@ -57,11 +58,11 @@ export class Game extends React.Component {
         const size = boardSizePercentage + '%';
         return (
             <div className="grid-container"
-            onKeyDown={this.handleInput}
-            tabIndex={-1}
-            style={{height: size, width: size}}
+                onKeyDown={this.handleInput}
+                tabIndex={-1}
+                style={{ height: size, width: size }}
             >
-                { gameIsDone ? <PlayAgain onClick={this.resetGame}></PlayAgain> : undefined }
+                { gameIsDone ? <PlayAgain onClick={this.resetGame}></PlayAgain> : undefined}
                 <Tree></Tree>
                 <Avatar {...this.state.game.avatar}></Avatar>
             </div>
