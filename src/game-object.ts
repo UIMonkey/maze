@@ -1,33 +1,27 @@
-import { IMazeObject, MazeObject } from "./maze-object";
+import { IMazeObject, MazeObject } from "./objects/maze-object";
 
-interface IBoard {
-    width: number;
-    height: number;
-}
-
-export const gridSectionWidth = 10;
+export const boardSizePercentage = 80;
+export const cellsPerRow = 10;
+export const cellSize = boardSizePercentage / cellsPerRow;
+export const maxBoardSize = boardSizePercentage - cellSize;
+export const gridSectionWidthPercentage = Math.floor(boardSizePercentage / cellsPerRow);
 
 export class GameObject {
     avatar: MazeObject = new MazeObject();
     trees: MazeObject[] = [];
-    board: IBoard = {
-        width: 20,
-        height: 20
-    }
-
 }
 
 export const checkBounds = (object: IMazeObject): void => {
     if (object.xPos < 0) {
         object.xPos = 0;
-    } else if (object.xPos > 90) {
-        object.xPos = 90;
+    } else if (object.xPos > (maxBoardSize)) {
+        object.xPos = maxBoardSize;
     }
 
     if (object.yPos < 0) {
         object.yPos = 0;
-    } else if (object.yPos > 90) {
-        object.yPos = 90;
+    } else if (object.yPos > maxBoardSize) {
+        object.yPos = maxBoardSize;
     }
 }
 

@@ -1,9 +1,9 @@
 import React from 'react';
-import Avatar from './avatar';
-import GameObject, { checkBounds, gridSectionWidth } from './game-object';
+import Avatar from './objects/avatar';
+import GameObject, { boardSizePercentage, checkBounds, gridSectionWidthPercentage, maxBoardSize } from './game-object';
 import './game.css';
 import PlayAgain from './play-again';
-import Tree from './tree';
+import Tree from './objects/tree';
 
 export class Game extends React.Component {
 
@@ -26,19 +26,19 @@ export class Game extends React.Component {
         switch (e.key) {
             case 'ArrowUp':
             case 'w':
-                newGame.avatar.yPos = this.state.game.avatar.yPos - gridSectionWidth;
+                newGame.avatar.yPos = this.state.game.avatar.yPos - gridSectionWidthPercentage;
                 break;
             case 'ArrowDown':
             case 's':
-                newGame.avatar.yPos = this.state.game.avatar.yPos + gridSectionWidth;
+                newGame.avatar.yPos = this.state.game.avatar.yPos + gridSectionWidthPercentage;
                 break;
             case 'ArrowLeft':
             case 'a':
-                newGame.avatar.xPos = this.state.game.avatar.xPos - gridSectionWidth;
+                newGame.avatar.xPos = this.state.game.avatar.xPos - gridSectionWidthPercentage;
                 break;
             case 'ArrowRight':
             case 'd':
-                newGame.avatar.xPos = this.state.game.avatar.xPos + gridSectionWidth;
+                newGame.avatar.xPos = this.state.game.avatar.xPos + gridSectionWidthPercentage;
                 break;
             default:
                 console.log('Try again!');
@@ -53,9 +53,14 @@ export class Game extends React.Component {
     }
 
     render() {
-        const gameIsDone = (this.state.game.avatar.xPos === 90 && this.state.game.avatar.yPos === 90);
+        const gameIsDone = (this.state.game.avatar.xPos === maxBoardSize && this.state.game.avatar.yPos === maxBoardSize);
+        const size = boardSizePercentage + '%';
         return (
-            <div className="grid-container" onKeyDown={this.handleInput} tabIndex={-1} >
+            <div className="grid-container"
+            onKeyDown={this.handleInput}
+            tabIndex={-1}
+            style={{height: size, width: size}}
+            >
                 { gameIsDone ? <PlayAgain onClick={this.resetGame}></PlayAgain> : undefined }
                 <Tree></Tree>
                 <Avatar {...this.state.game.avatar}></Avatar>
