@@ -6,8 +6,12 @@ export interface IGameObject {
 }
 
 export class GameObject implements IGameObject {
-    avatar: MazeObject = new MazeObject();
+    avatar: MazeObject;
     trees: MazeObject[] = [];
+
+    constructor(cellSize = 10) {
+        this.avatar = new MazeObject(0, 0, cellSize, cellSize);
+    }
 }
 
 export default GameObject;

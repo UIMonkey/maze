@@ -1,11 +1,5 @@
-.avatar {
-    height: 10%;
-    width: 75px;
+@import "object.css";
+
+.object.avatar {
     background-image: url("./ant1.png");
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    position: absolute;
-    left: 0px;
-    top: 0px;
 }

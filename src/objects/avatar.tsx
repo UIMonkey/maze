@@ -9,7 +9,7 @@ export class Avatar extends React.Component<IMazeObject> {
         let height = this.props.height + '%';
         let width = this.props.width + '%';
         return (
-            <div className="avatar" style={{top, left, height, width}}></div>
+            <div className="object avatar" style={{top, left, height, width}}></div>
         );
     } 
 }

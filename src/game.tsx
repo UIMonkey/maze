@@ -1,21 +1,24 @@
 import React from 'react';
 import Avatar from './objects/avatar';
 import GameObject from './objects/game-object';
-import { boardSizePercentage, checkBounds, gridSectionWidthPercentage, maxBoardSize } from './utils';
+import { boardSizePercentage, checkBounds, gridSectionWidthPercentage, maxBoardSize, cellSize, generateStaticObjects, cellsPerRow } from './utils';
 import './game.css';
 import PlayAgain from './play-again';
 import Tree from './objects/tree';
+import { IMazeObject } from './objects/maze-object';
 
 export class Game extends React.Component {
 
     state = {
-        game: new GameObject()
+        game: new GameObject(cellSize),
+        trees: generateStaticObjects<IMazeObject>(cellsPerRow)
     }
 
     constructor(props: any) {
         super(props);
         this.handleInput = this.handleInput.bind(this);
         this.resetGame = this.resetGame.bind(this);
+        ;
     }
 
     /**
@@ -63,7 +66,9 @@ export class Game extends React.Component {
                 style={{ height: size, width: size }}
             >
                 { gameIsDone ? <PlayAgain onClick={this.resetGame}></PlayAgain> : undefined}
-                <Tree></Tree>
+                {this.state.trees.map((tree: IMazeObject) => (
+                    <Tree key={tree.id} {...tree} ></Tree>
+                ))}
                 <Avatar {...this.state.game.avatar}></Avatar>
             </div>
         )
