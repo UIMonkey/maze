@@ -1,17 +1,18 @@
 import React from 'react';
-import Avatar from './objects/avatar';
+import MazeEntity from './objects/object';
 import GameObject from './objects/game-object';
+import { IMazeObject, MazeObject } from './objects/maze-object';
 import { boardSizePercentage, checkBounds, gridSectionWidthPercentage, maxBoardSize, cellSize, generateStaticObjects, cellsPerRow } from './utils';
 import './game.css';
 import PlayAgain from './play-again';
-import Tree from './objects/tree';
-import { IMazeObject } from './objects/maze-object';
 
 export class Game extends React.Component {
 
     state = {
         game: new GameObject(cellSize),
-        trees: generateStaticObjects<IMazeObject>(cellsPerRow)
+        avatar: new MazeObject(0, 0, cellSize, cellSize, './ant1.png'),
+        trees: generateStaticObjects<IMazeObject>(cellsPerRow),
+        cake: new MazeObject(maxBoardSize, maxBoardSize, cellSize, cellSize, './cake.png')
     }
 
     constructor(props: any) {
@@ -26,29 +27,29 @@ export class Game extends React.Component {
      * @param e 
      */
     handleInput(e: React.KeyboardEvent<HTMLDivElement>) {
-        let newGame = { ...this.state.game };
+        let newAvatar = { ...this.state.avatar };
         switch (e.key) {
             case 'ArrowUp':
             case 'w':
-                newGame.avatar.yPos = this.state.game.avatar.yPos - gridSectionWidthPercentage;
+                newAvatar.yPos = this.state.avatar.yPos - gridSectionWidthPercentage;
                 break;
             case 'ArrowDown':
             case 's':
-                newGame.avatar.yPos = this.state.game.avatar.yPos + gridSectionWidthPercentage;
+                newAvatar.yPos = this.state.avatar.yPos + gridSectionWidthPercentage;
                 break;
             case 'ArrowLeft':
             case 'a':
-                newGame.avatar.xPos = this.state.game.avatar.xPos - gridSectionWidthPercentage;
+                newAvatar.xPos = this.state.avatar.xPos - gridSectionWidthPercentage;
                 break;
             case 'ArrowRight':
             case 'd':
-                newGame.avatar.xPos = this.state.game.avatar.xPos + gridSectionWidthPercentage;
+                newAvatar.xPos = this.state.avatar.xPos + gridSectionWidthPercentage;
                 break;
             default:
                 console.log('Try again!');
         }
-        checkBounds(newGame.avatar);
-        this.setState({ ...newGame })
+        checkBounds(newAvatar);
+        this.setState({ avatar: newAvatar })
     }
 
     resetGame() {
@@ -57,7 +58,7 @@ export class Game extends React.Component {
     }
 
     render() {
-        const gameIsDone = (this.state.game.avatar.xPos === maxBoardSize && this.state.game.avatar.yPos === maxBoardSize);
+        const gameIsDone = (this.state.avatar.xPos === maxBoardSize && this.state.avatar.yPos === maxBoardSize);
         const size = boardSizePercentage + '%';
         return (
             <div className="grid-container"
@@ -67,9 +68,10 @@ export class Game extends React.Component {
             >
                 { gameIsDone ? <PlayAgain onClick={this.resetGame}></PlayAgain> : undefined}
                 {this.state.trees.map((tree: IMazeObject) => (
-                    <Tree key={tree.id} {...tree} ></Tree>
+                    <MazeEntity key={tree.id} {...tree} ></MazeEntity>
                 ))}
-                <Avatar {...this.state.game.avatar}></Avatar>
+                <MazeEntity key={'avatar'} {...this.state.avatar}></MazeEntity>
+                <MazeEntity key={'cake'} {...this.state.cake}></MazeEntity>
             </div>
         )
     }

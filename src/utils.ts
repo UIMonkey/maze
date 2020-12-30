@@ -6,6 +6,8 @@ export const cellSize = boardSizePercentage / cellsPerRow;
 export const maxBoardSize = boardSizePercentage - cellSize;
 export const gridSectionWidthPercentage = Math.floor(boardSizePercentage / cellsPerRow);
 
+export const treeImage = 'tree.png';
+
 export const checkBounds = (object: IMazeObject): void => {
     if (object.xPos < 0) {
         object.xPos = 0;
@@ -34,7 +36,7 @@ export const generateStaticObjects = <T extends MazeObject>(cellsPerRow: number)
         let randYCell = Math.floor(Math.random() * (cellsPerRow - 1));
         let xPos = cellSize * randXCell;
         let yPos = cellSize * randYCell;
-        let tree = new MazeObject(xPos, yPos, cellSize, cellSize);
+        let tree = new MazeObject(xPos, yPos, cellSize, cellSize, treeImage);
         treesSet.add(JSON.stringify(tree));
     }
     
