@@ -49,8 +49,12 @@ export const Game = () => {
             default:
                 console.log('Try again!');
         }
+        // Check for the boundaries on the board
         checkBounds(newAvatar);
-        setAvatar(newAvatar);
+        // Check for clash with a tree. If movement is onto a tree, then player cannot move there so do not reposition.
+        if (!trees.find((tree: IMazeObject) => tree.xPos === newAvatar.xPos && tree.yPos === newAvatar.yPos)) {
+            setAvatar(newAvatar);
+        }
     }
 
     return (
