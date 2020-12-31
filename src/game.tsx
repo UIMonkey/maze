@@ -1,80 +1,72 @@
-import React from 'react';
+import React, { useState } from 'react';
 import MazeEntity from './objects/object';
-import GameObject from './objects/game-object';
 import { IMazeObject, MazeObject } from './objects/maze-object';
-import { boardSizePercentage, checkBounds, gridSectionWidthPercentage, maxBoardSize, cellSize, generateStaticObjects, cellsPerRow } from './utils';
+import { boardSizePercentage, checkBounds, gridSectionWidthPercentage, maxBoardSize, cellSize, generateStaticObjects as generateTrees, cellsPerRow } from './utils';
 import './game.css';
 import PlayAgain from './play-again';
 
-export class Game extends React.Component {
+export const Game = () => {
 
-    state = {
-        game: new GameObject(cellSize),
-        avatar: new MazeObject(0, 0, cellSize, cellSize, './ant1.png'),
-        trees: generateStaticObjects<IMazeObject>(cellsPerRow),
-        cake: new MazeObject(maxBoardSize, maxBoardSize, cellSize, cellSize, './cake.png')
-    }
+    const initialAvatar = new MazeObject(0, 0, cellSize, cellSize, './ant1.png');
+    const initialCake = new MazeObject(maxBoardSize, maxBoardSize, cellSize, cellSize, './cake.png');
+    // Set up the state
+    const [avatar, setAvatar] = useState(initialAvatar);
+    const [trees, setTrees] = useState(generateTrees<IMazeObject>(cellsPerRow));
+    const [cake] = useState(initialCake);
 
-    constructor(props: any) {
-        super(props);
-        this.handleInput = this.handleInput.bind(this);
-        this.resetGame = this.resetGame.bind(this);
-        ;
-    }
+    const gameIsDone = (avatar.xPos === maxBoardSize && avatar.yPos === maxBoardSize);
+    const size = boardSizePercentage + '%';
+
+    // Reset the game back to the initial state
+    const resetGame = () => {
+        setAvatar(initialAvatar);
+        setTrees(generateTrees<IMazeObject>(cellsPerRow));
+    };
 
     /**
-     * Control the player direction from the user input
-     * @param e 
-     */
-    handleInput(e: React.KeyboardEvent<HTMLDivElement>) {
-        let newAvatar = { ...this.state.avatar };
+* Control the player direction from the user input
+* @param e 
+*/
+    const handleInput = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        let newAvatar = { ...avatar };
         switch (e.key) {
             case 'ArrowUp':
             case 'w':
-                newAvatar.yPos = this.state.avatar.yPos - gridSectionWidthPercentage;
+                newAvatar.yPos = avatar.yPos - gridSectionWidthPercentage;
                 break;
             case 'ArrowDown':
             case 's':
-                newAvatar.yPos = this.state.avatar.yPos + gridSectionWidthPercentage;
+                newAvatar.yPos = avatar.yPos + gridSectionWidthPercentage;
                 break;
             case 'ArrowLeft':
             case 'a':
-                newAvatar.xPos = this.state.avatar.xPos - gridSectionWidthPercentage;
+                newAvatar.xPos = avatar.xPos - gridSectionWidthPercentage;
                 break;
             case 'ArrowRight':
             case 'd':
-                newAvatar.xPos = this.state.avatar.xPos + gridSectionWidthPercentage;
+                newAvatar.xPos = avatar.xPos + gridSectionWidthPercentage;
                 break;
             default:
                 console.log('Try again!');
         }
         checkBounds(newAvatar);
-        this.setState({ avatar: newAvatar })
+        setAvatar(newAvatar);
     }
 
-    resetGame() {
-        console.log("Reset Game");
-        this.setState({ game: new GameObject() });
-    }
-
-    render() {
-        const gameIsDone = (this.state.avatar.xPos === maxBoardSize && this.state.avatar.yPos === maxBoardSize);
-        const size = boardSizePercentage + '%';
-        return (
-            <div className="grid-container"
-                onKeyDown={this.handleInput}
-                tabIndex={-1}
-                style={{ height: size, width: size }}
-            >
-                { gameIsDone ? <PlayAgain onClick={this.resetGame}></PlayAgain> : undefined}
-                {this.state.trees.map((tree: IMazeObject) => (
-                    <MazeEntity key={tree.id} {...tree} ></MazeEntity>
-                ))}
-                <MazeEntity key={'avatar'} {...this.state.avatar}></MazeEntity>
-                <MazeEntity key={'cake'} {...this.state.cake}></MazeEntity>
-            </div>
-        )
-    }
+    return (
+        <div className="grid-container"
+            onKeyDown={handleInput}
+            tabIndex={-1}
+            style={{ height: size, width: size }}
+        >
+            { gameIsDone ? <PlayAgain onClick={resetGame}></PlayAgain> : undefined}
+            {trees.map((tree: IMazeObject) => (
+                <MazeEntity key={tree.id} {...tree} ></MazeEntity>
+            ))}
+            <MazeEntity key={'avatar'} {...avatar}></MazeEntity>
+            <MazeEntity key={'cake'} {...cake}></MazeEntity>
+        </div>
+    )
 }
 
 export default Game;
