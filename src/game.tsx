@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import MazeEntity from './objects/object';
-import { IMazeObject, MazeObject } from './objects/maze-object';
+import { IMazeObject, MazeObject, ObjectType } from './objects/maze-object';
 import { boardSizePercentage, checkBounds, gridSectionWidthPercentage, maxBoardSize, cellSize, generateStaticObjects as generateTrees, cellsPerRow } from './utils';
 import './game.css';
 import PlayAgain from './play-again';
 
 export const Game = () => {
 
-    const initialAvatar = new MazeObject(0, 0, cellSize, cellSize, './ant1.png');
-    const initialCake = new MazeObject(maxBoardSize, maxBoardSize, cellSize, cellSize, './cake.png');
+    const initialAvatar = new MazeObject(0, 0, cellSize, cellSize, ObjectType.Avatar);
+    const initialCake = new MazeObject(maxBoardSize, maxBoardSize, cellSize, cellSize, ObjectType.Cake);
     // Set up the state
     const [avatar, setAvatar] = useState(initialAvatar);
     const [trees, setTrees] = useState(generateTrees<IMazeObject>(cellsPerRow));
